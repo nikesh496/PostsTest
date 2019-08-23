@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -27,6 +28,8 @@ public class MainActivity extends AppCompatActivity implements CommonNavigator {
     private PostsViewModel viewModel;
     private RecyclerAdapter adapter;
     private ProgressBar progressBar;
+    private ActionBar actionBar;
+    private List<PostsModel.hitsList> list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements CommonNavigator {
         setContentView(R.layout.activity_main);
         viewModel = ViewModelProviders.of(this).get(PostsViewModel.class);
         viewModel.setNavigator(this);
+        actionBar = getSupportActionBar();
 
         swipeRefreshLayout = findViewById(R.id.swipeLayout);
         recyclerView = findViewById(R.id.recyclerView);
@@ -43,11 +47,16 @@ public class MainActivity extends AppCompatActivity implements CommonNavigator {
         viewModel.getPostsApiCall();
 
         viewModel.getPostsModelMutableLiveData().observe(this, new Observer<PostsModel>() {
+
+
             @Override
             public void onChanged(PostsModel postsModel) {
-                adapter.setList(postsModel.getData());
-                swipeRefreshLayout.setRefreshing(false);
-                recyclerView.setVisibility(View.VISIBLE);
+                if (postsModel != null) {
+                    adapter.setList(postsModel.getData());
+                    swipeRefreshLayout.setRefreshing(false);
+                    recyclerView.setVisibility(View.VISIBLE);
+                    list = postsModel.getData();
+                }
             }
         });
 
@@ -83,7 +92,17 @@ public class MainActivity extends AppCompatActivity implements CommonNavigator {
         }
     }
 
-    public void switchToggle(int position) {
 
+    public void checkCount() {
+       /* if ()
+
+    }*/
+       int count = 0;
+       for(int i  =0;i< list.size();i++){
+           if(list.get(i).isCount()) {
+               count++;
+           }
+       }
+        actionBar.setTitle("Selected = " + count);
     }
 }

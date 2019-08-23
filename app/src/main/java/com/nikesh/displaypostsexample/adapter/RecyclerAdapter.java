@@ -22,6 +22,7 @@ public class RecyclerAdapter  extends RecyclerView.Adapter<RecyclerAdapter.ViewH
     private List<PostsModel.hitsList> postsList;
     MainActivity listener;
     private boolean enableDisableSwitch;
+    private int count = 1;
 
     public RecyclerAdapter(Context context, List<PostsModel.hitsList> postsModels){
         this.context = context;
@@ -45,17 +46,21 @@ public class RecyclerAdapter  extends RecyclerView.Adapter<RecyclerAdapter.ViewH
         holder.row_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-             switchToggle(holder);
+             switchToggle(holder,position);
             }
         });
     }
 
-    private void switchToggle(ViewHolder holder) {
+    private void switchToggle(ViewHolder holder, int position) {
         if(enableDisableSwitch){
             holder.switchCompat.setChecked(true);
+            postsList.get(position).setCount(true);
+            listener.checkCount();
             enableDisableSwitch = false;
         } else {
             holder.switchCompat.setChecked(false);
+            postsList.get(position).setCount(false);
+            listener.checkCount();
             enableDisableSwitch = true;
         }
     }

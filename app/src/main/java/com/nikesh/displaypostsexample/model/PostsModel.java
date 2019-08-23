@@ -34,6 +34,16 @@ public class PostsModel {
         @SerializedName("created_at")
         private String created_at;
 
+        private boolean count;
+
+        public boolean isCount() {
+            return count;
+        }
+
+        public void setCount(boolean count) {
+            this.count = count;
+        }
+
         @Expose
         @SerializedName("title")
         private String title;
